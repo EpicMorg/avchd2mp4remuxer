@@ -38,14 +38,14 @@ namespace avchd2mp4remuxergui
             ChkDepFFmpeg.Enabled = false;
             gbxProcess.Enabled = true;
         }
-        private void ValidatekkMp4Box()
+        private void ValidateMp4Box()
         {
             ChkDepMp4Box.ForeColor = Color.Green;
             ChkDepMp4Box.Checked = true;
             ChkDepMp4Box.Enabled = false;
             gbxProcess.Enabled = true;
         }
-        private void МеталлюгаСукаЗАебалМудак()
+        private void ValidateTsMuxer()
         {
             ChkDepTsMuxer.ForeColor = Color.Green;
             ChkDepTsMuxer.Checked = true;
@@ -86,7 +86,7 @@ namespace avchd2mp4remuxergui
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     _pathToFMp4Box = openFileDialog.FileName;
-                    ValidatekkMp4Box();
+                    ValidateMp4Box();
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace avchd2mp4remuxergui
                 }
             }else
             {
-                ValidatekkMp4Box();
+                ValidateMp4Box();
             }
         }
 
@@ -110,7 +110,7 @@ namespace avchd2mp4remuxergui
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     _pathToTsMuxer = openFileDialog.FileName;
-                    МеталлюгаСукаЗАебалМудак();
+                    ValidateTsMuxer();
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace avchd2mp4remuxergui
             }
             else
             {
-                МеталлюгаСукаЗАебалМудак();
+                ValidateTsMuxer();
             }
         }
 
