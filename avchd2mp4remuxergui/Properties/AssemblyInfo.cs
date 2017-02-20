@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("avchd2mp4remuxergui")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("AVCHD 2 Mp4 Remuxer GUI")]
+[assembly: AssemblyDescription("Helper for easy remux")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("avchd2mp4remuxergui")]
-[assembly: AssemblyCopyright("Copyright © STAM 2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("EpicMorg")]
+[assembly: AssemblyProduct("AVCHD 2 Mp4 Remuxer GUI")]
+[assembly: AssemblyCopyright("Copyright © STAM, EpicMorg 2017")]
+[assembly: AssemblyTrademark("EpicMorg")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
