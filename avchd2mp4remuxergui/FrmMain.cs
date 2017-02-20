@@ -30,8 +30,8 @@ namespace avchd2mp4remuxergui
         {
             btnStart.Enabled = (!string.IsNullOrWhiteSpace(txtInputDir.Text) && !string.IsNullOrWhiteSpace(txtOutDir.Text) &&
                 !string.IsNullOrWhiteSpace(txtTempDir.Text));
+            gbxProcess.Enabled = (ChkDepTsMuxer.Checked && ChkDepMp4Box.Checked && ChkDepFFmpeg.Checked);
 
-           
             if (!File.Exists(_pathToFFmpeg))
             {
                 linkFFmpegCheck.LinkColor = Color.Red;
@@ -67,13 +67,6 @@ namespace avchd2mp4remuxergui
                 linktsMuxerCheck.LinkColor = Color.ForestGreen;
                 ChkDepTsMuxer.Checked = true;
                 label3.Text = @"найден!";
-            }
-            if (ChkDepTsMuxer.Checked && ChkDepMp4Box.Checked && ChkDepFFmpeg.Checked)
-            {
-                gbxProcess.Enabled = true;
-            }else
-            {
-                gbxProcess.Enabled = false;
             }
             if (rbMTS.Checked && !rbM2TS.Checked && !rbTS.Checked)
             {
