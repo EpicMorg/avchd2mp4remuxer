@@ -28,15 +28,10 @@ namespace avchd2mp4remuxergui
   
     private void CheckDeps()
         {
-            if (!string.IsNullOrWhiteSpace(txtInputDir.Text) && !string.IsNullOrWhiteSpace(txtOutDir.Text) &&
-                !string.IsNullOrWhiteSpace(txtTempDir.Text))
-            {
-                btnStart.Enabled = true;
-            }
-            else
-            {
-                btnStart.Enabled = false;
-            }
+            btnStart.Enabled = (!string.IsNullOrWhiteSpace(txtInputDir.Text) && !string.IsNullOrWhiteSpace(txtOutDir.Text) &&
+                !string.IsNullOrWhiteSpace(txtTempDir.Text));
+
+           
             if (!File.Exists(_pathToFFmpeg))
             {
                 linkFFmpegCheck.LinkColor = Color.Red;
@@ -277,26 +272,38 @@ namespace avchd2mp4remuxergui
         private void BtnStart_Click(object sender, EventArgs e)
         {
             CheckDeps();
-             var files = Directory.GetFiles(txtInputDir.Text, _inputDefaultFormat, SearchOption.TopDirectoryOnly);
+            // Шаг 1. Из сорцовой папки делаем выборку по файлам по заданной маске (радиобатоном, пока только MTS) 
+            var files = Directory.GetFiles(txtInputDir.Text, _inputDefaultFormat, SearchOption.TopDirectoryOnly);
               Parallel.ForEach(files, (file, state, index) =>
               {
-                  var outF = Path.Combine(txtTempDir.Text + "\"" + file + ".track_4352.m4v");
+                  // Шаг 2. Дальше запускается что-то вроде \\\\ffmpeg -i "ПОЛНЫЙПУТЬКМТС.MTS" -c:v copy -an  "ПОЛНЫЙПУТЬДЛЯВИДЕО.track_4352.m4v"\\\\
+                  // Но должно запускаться по-очереди, а не одновременно. Надо починить..
+                  var m4VFile = Path.GetFileNameWithoutExtension(file);
+                  var outF = Path.Combine(txtTempDir.Text + @"\" + m4VFile + ".track_4352.m4v");
                   var ffmpegCmd = " -y -i " + "\"" + file + "\"" + " -c:v copy -an " + "\"" + outF + "\"";
+                  //Для отладки...
                   MessageBox.Show(_pathToFFmpeg + ffmpegCmd);
+                  // Пока вывод во встроенную консоль отключен, ибо заускаетя параллельно.. Использовать Process.Start();
+                  //StartProcess.StartProcess(_pathToFFmpeg, ffmpegCmd);
+                  //StartProcess.AutoScroll = true;
+                  //SendMessage(StartProcess.Handle, WmVscroll, SbBottom, 0x0);
 
+                  // Шаг 3. создаем метафайл на  mts-файл который будем демуксовать.
+                  // Писать в выбранную темповую папку файл default.meta с примерным содержимым:
+                  // \\\\MUXOPT--no - pcr - on - video - pid--new- audio - pes--demux--vbr--vbv - len = 500\\\\
+                  // \\\\A_AC3, "ПОЛНЫЙПУТЬКМТС.MTS", track = 4352\\\\
+
+                  // Шаг 4. запуcкаем файл tsmuxer.exe c параметрами и экстрактируем ауидо сдерствами демукса:
+                  // \\\\tsmuxer.exe "Путь к темповой папке\default.meta" "Путь выходной папки"\\\\
+                  // Ждем пока пройдет.
+
+                  // Шаг 5. Запихиваем mp4v (п2) и ac3 (п4) в .mp4 средствами мукса:
+                  // \\\\ MP4Box.exe -add "ПОЛНЫЙПУТЬДЛЯВИДЕО.track_4352.m4v:fps=13.534:delay=0:name=ИМЯЭТОГОВИДЕО.track_4352.m4v" -add "ПОЛНЫЙПУТЬКМТС.track_4352.ac3" -itags tool="My MP4Box GUI 0.6.0.6 <http://my-mp4box-gui.zymichost.com>" -new "ПУТЬКГОТОВОМУМУКСОМАННОМУ-muxed.mp4" \\\\
+                  //  Ждем пока пройдет.
+
+                  //Идем к шагу 1 для следующего файла.
               });
-            //test only
-            /* 
-            txtInputDir.Text = txtOutDir.Text = txtTempDir.Text = @"D:\Work\PRIVATE\AVCHD\BDMV\STREAM";
-            var inputF = Path.Combine(txtInputDir.Text + "00000.MTS");
-            var outF = Path.Combine(txtTempDir.Text + "00000.track_4352.m4v");
-           
-            //MessageBox.Show(ffmpegCmd);
-            StartProcess.StartProcess(_pathToFFmpeg, ffmpegCmd);
-            StartProcess.AutoScroll = true;
-            SendMessage(StartProcess.Handle, WmVscroll, SbBottom, 0x0);
-            */
-
+      
         }
 
     }
