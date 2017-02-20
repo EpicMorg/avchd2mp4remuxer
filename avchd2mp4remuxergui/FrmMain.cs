@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleControl;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -34,9 +25,9 @@ namespace avchd2mp4remuxergui
   
     private void CheckDeps()
         {
-            CheckFFmpeg(true);
-            CheckMp4Box(true);
-            CheckTsMuxer(true);
+            CheckFFmpeg();
+            CheckMp4Box();
+            CheckTsMuxer();
             if (!string.IsNullOrWhiteSpace(txtInputDir.Text) && !string.IsNullOrWhiteSpace(txtOutDir.Text) &&
                 !string.IsNullOrWhiteSpace(txtTempDir.Text))
             {
@@ -70,7 +61,7 @@ namespace avchd2mp4remuxergui
             gbxProcess.Enabled = true; 
         }
 
-        private void CheckFFmpeg(bool bCheckFFmpeg)
+        private void CheckFFmpeg()
         {
             if (File.Exists(_pathToFFmpeg))
             {
@@ -94,7 +85,7 @@ namespace avchd2mp4remuxergui
                 } 
             }
         }
-        private void CheckMp4Box(bool bCheckMp4Box)
+        private void CheckMp4Box()
         {
             if (!File.Exists(_pathToFMp4Box))
             {
@@ -118,7 +109,7 @@ namespace avchd2mp4remuxergui
             }
         }
 
-        public void CheckTsMuxer(bool bCheckTsMuxer)
+        public void CheckTsMuxer()
         {
             if (!File.Exists(_pathToTsMuxer))
             {
