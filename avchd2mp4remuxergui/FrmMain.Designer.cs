@@ -34,17 +34,20 @@
             this.ChkDepMp4Box = new System.Windows.Forms.CheckBox();
             this.ChkDepFFmpeg = new System.Windows.Forms.CheckBox();
             this.gbxProcess = new System.Windows.Forms.GroupBox();
+            this.btnAbout = new System.Windows.Forms.Button();
+            this.StartProcess = new ConsoleControl.ConsoleControl();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnOutDir = new System.Windows.Forms.Button();
+            this.btnTempDir = new System.Windows.Forms.Button();
+            this.btnInputDir = new System.Windows.Forms.Button();
+            this.lblOutDir = new System.Windows.Forms.Label();
+            this.txtOutDir = new System.Windows.Forms.TextBox();
+            this.lblTempDir = new System.Windows.Forms.Label();
+            this.txtTempDir = new System.Windows.Forms.TextBox();
+            this.lblInputDir = new System.Windows.Forms.Label();
+            this.txtInputDir = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.txtInputDir = new System.Windows.Forms.TextBox();
-            this.lblInputDir = new System.Windows.Forms.Label();
-            this.txtTempDir = new System.Windows.Forms.TextBox();
-            this.lblTempDir = new System.Windows.Forms.Label();
-            this.txtOutDir = new System.Windows.Forms.TextBox();
-            this.lblOutDir = new System.Windows.Forms.Label();
-            this.btnInputDir = new System.Windows.Forms.Button();
-            this.btnTempDir = new System.Windows.Forms.Button();
-            this.btnOutDir = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gbxDeps.SuspendLayout();
             this.gbxProcess.SuspendLayout();
@@ -112,6 +115,9 @@
             this.gbxProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbxProcess.Controls.Add(this.btnAbout);
+            this.gbxProcess.Controls.Add(this.StartProcess);
+            this.gbxProcess.Controls.Add(this.btnStart);
             this.gbxProcess.Controls.Add(this.btnOutDir);
             this.gbxProcess.Controls.Add(this.btnTempDir);
             this.gbxProcess.Controls.Add(this.btnInputDir);
@@ -128,54 +134,85 @@
             this.gbxProcess.TabStop = false;
             this.gbxProcess.Text = "Процесс";
             // 
-            // openFileDialog
+            // btnAbout
             // 
-            this.openFileDialog.Filter = "FFmpeg binary|ffmpeg.exe|MP4Box binary|MP4Box.exe|tsMuxeR|tsMuxeR.exe|All files|*" +
-    ".*";
+            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAbout.Location = new System.Drawing.Point(6, 248);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(88, 23);
+            this.btnAbout.TabIndex = 6;
+            this.btnAbout.Text = "About";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.BntAbout_Click);
             // 
-            // toolTip
+            // StartProcess
             // 
-            this.toolTip.IsBalloon = true;
-            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            this.toolTip.ToolTipTitle = "Внивание!";
-            // 
-            // txtInputDir
-            // 
-            this.txtInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.StartProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInputDir.Location = new System.Drawing.Point(6, 32);
-            this.txtInputDir.Name = "txtInputDir";
-            this.txtInputDir.ReadOnly = true;
-            this.txtInputDir.Size = new System.Drawing.Size(371, 20);
-            this.txtInputDir.TabIndex = 0;
+            this.StartProcess.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.StartProcess.IsInputEnabled = true;
+            this.StartProcess.Location = new System.Drawing.Point(6, 136);
+            this.StartProcess.Name = "StartProcess";
+            this.StartProcess.SendKeyboardCommandsToProcess = false;
+            this.StartProcess.ShowDiagnostics = false;
+            this.StartProcess.Size = new System.Drawing.Size(428, 106);
+            this.StartProcess.TabIndex = 5;
             // 
-            // lblInputDir
+            // btnStart
             // 
-            this.lblInputDir.AutoSize = true;
-            this.lblInputDir.Location = new System.Drawing.Point(6, 16);
-            this.lblInputDir.Name = "lblInputDir";
-            this.lblInputDir.Size = new System.Drawing.Size(94, 13);
-            this.lblInputDir.TabIndex = 1;
-            this.lblInputDir.Text = "Входящая папка:";
-            // 
-            // txtTempDir
-            // 
-            this.txtTempDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTempDir.Location = new System.Drawing.Point(6, 71);
-            this.txtTempDir.Name = "txtTempDir";
-            this.txtTempDir.ReadOnly = true;
-            this.txtTempDir.Size = new System.Drawing.Size(371, 20);
-            this.txtTempDir.TabIndex = 0;
+            this.btnStart.Enabled = false;
+            this.btnStart.Location = new System.Drawing.Point(100, 248);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(334, 23);
+            this.btnStart.TabIndex = 4;
+            this.btnStart.Text = "Запуск";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
-            // lblTempDir
+            // btnOutDir
             // 
-            this.lblTempDir.AutoSize = true;
-            this.lblTempDir.Location = new System.Drawing.Point(6, 55);
-            this.lblTempDir.Name = "lblTempDir";
-            this.lblTempDir.Size = new System.Drawing.Size(100, 13);
-            this.lblTempDir.TabIndex = 1;
-            this.lblTempDir.Text = "Временная папка:";
+            this.btnOutDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOutDir.Location = new System.Drawing.Point(383, 108);
+            this.btnOutDir.Name = "btnOutDir";
+            this.btnOutDir.Size = new System.Drawing.Size(51, 23);
+            this.btnOutDir.TabIndex = 2;
+            this.btnOutDir.Text = "...";
+            this.btnOutDir.UseVisualStyleBackColor = true;
+            this.btnOutDir.Click += new System.EventHandler(this.BtnOutDir_Click);
+            // 
+            // btnTempDir
+            // 
+            this.btnTempDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTempDir.Location = new System.Drawing.Point(383, 69);
+            this.btnTempDir.Name = "btnTempDir";
+            this.btnTempDir.Size = new System.Drawing.Size(51, 23);
+            this.btnTempDir.TabIndex = 2;
+            this.btnTempDir.Text = "...";
+            this.btnTempDir.UseVisualStyleBackColor = true;
+            this.btnTempDir.Click += new System.EventHandler(this.BtnTempDir_Click);
+            // 
+            // btnInputDir
+            // 
+            this.btnInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInputDir.Location = new System.Drawing.Point(383, 30);
+            this.btnInputDir.Name = "btnInputDir";
+            this.btnInputDir.Size = new System.Drawing.Size(51, 23);
+            this.btnInputDir.TabIndex = 2;
+            this.btnInputDir.Text = "...";
+            this.btnInputDir.UseVisualStyleBackColor = true;
+            this.btnInputDir.Click += new System.EventHandler(this.BtnInputDir_Click);
+            // 
+            // lblOutDir
+            // 
+            this.lblOutDir.AutoSize = true;
+            this.lblOutDir.Location = new System.Drawing.Point(6, 94);
+            this.lblOutDir.Name = "lblOutDir";
+            this.lblOutDir.Size = new System.Drawing.Size(101, 13);
+            this.lblOutDir.TabIndex = 1;
+            this.lblOutDir.Text = "Исходящая папка:";
             // 
             // txtOutDir
             // 
@@ -187,44 +224,54 @@
             this.txtOutDir.Size = new System.Drawing.Size(371, 20);
             this.txtOutDir.TabIndex = 0;
             // 
-            // lblOutDir
+            // lblTempDir
             // 
-            this.lblOutDir.AutoSize = true;
-            this.lblOutDir.Location = new System.Drawing.Point(6, 94);
-            this.lblOutDir.Name = "lblOutDir";
-            this.lblOutDir.Size = new System.Drawing.Size(101, 13);
-            this.lblOutDir.TabIndex = 1;
-            this.lblOutDir.Text = "Исходящая папка:";
+            this.lblTempDir.AutoSize = true;
+            this.lblTempDir.Location = new System.Drawing.Point(6, 55);
+            this.lblTempDir.Name = "lblTempDir";
+            this.lblTempDir.Size = new System.Drawing.Size(85, 13);
+            this.lblTempDir.TabIndex = 1;
+            this.lblTempDir.Text = "Папка с кэшэм";
             // 
-            // btnInputDir
+            // txtTempDir
             // 
-            this.btnInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnInputDir.Location = new System.Drawing.Point(383, 30);
-            this.btnInputDir.Name = "btnInputDir";
-            this.btnInputDir.Size = new System.Drawing.Size(51, 23);
-            this.btnInputDir.TabIndex = 2;
-            this.btnInputDir.Text = "...";
-            this.btnInputDir.UseVisualStyleBackColor = true;
+            this.txtTempDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTempDir.Location = new System.Drawing.Point(6, 71);
+            this.txtTempDir.Name = "txtTempDir";
+            this.txtTempDir.ReadOnly = true;
+            this.txtTempDir.Size = new System.Drawing.Size(371, 20);
+            this.txtTempDir.TabIndex = 0;
             // 
-            // btnTempDir
+            // lblInputDir
             // 
-            this.btnTempDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTempDir.Location = new System.Drawing.Point(383, 69);
-            this.btnTempDir.Name = "btnTempDir";
-            this.btnTempDir.Size = new System.Drawing.Size(51, 23);
-            this.btnTempDir.TabIndex = 2;
-            this.btnTempDir.Text = "...";
-            this.btnTempDir.UseVisualStyleBackColor = true;
+            this.lblInputDir.AutoSize = true;
+            this.lblInputDir.Location = new System.Drawing.Point(6, 16);
+            this.lblInputDir.Name = "lblInputDir";
+            this.lblInputDir.Size = new System.Drawing.Size(94, 13);
+            this.lblInputDir.TabIndex = 1;
+            this.lblInputDir.Text = "Входящая папка:";
             // 
-            // btnOutDir
+            // txtInputDir
             // 
-            this.btnOutDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOutDir.Location = new System.Drawing.Point(383, 108);
-            this.btnOutDir.Name = "btnOutDir";
-            this.btnOutDir.Size = new System.Drawing.Size(51, 23);
-            this.btnOutDir.TabIndex = 2;
-            this.btnOutDir.Text = "...";
-            this.btnOutDir.UseVisualStyleBackColor = true;
+            this.txtInputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInputDir.Location = new System.Drawing.Point(6, 32);
+            this.txtInputDir.Name = "txtInputDir";
+            this.txtInputDir.ReadOnly = true;
+            this.txtInputDir.Size = new System.Drawing.Size(371, 20);
+            this.txtInputDir.TabIndex = 0;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "FFmpeg binary|ffmpeg.exe|MP4Box binary|MP4Box.exe|tsMuxeR|tsMuxeR.exe|All files|*" +
+    ".*";
+            // 
+            // toolTip
+            // 
+            this.toolTip.IsBalloon = true;
+            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            this.toolTip.ToolTipTitle = "Внивание!";
             // 
             // FrmMain
             // 
@@ -265,6 +312,9 @@
         private System.Windows.Forms.Label lblInputDir;
         private System.Windows.Forms.TextBox txtInputDir;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.Button btnStart;
+        private ConsoleControl.ConsoleControl StartProcess;
+        private System.Windows.Forms.Button btnAbout;
     }
 }
 

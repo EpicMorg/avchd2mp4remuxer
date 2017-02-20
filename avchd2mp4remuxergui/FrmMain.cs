@@ -7,9 +7,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleControl;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace avchd2mp4remuxergui
 {
@@ -23,12 +26,26 @@ namespace avchd2mp4remuxergui
         {
             InitializeComponent();
         }
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr window, int message, int wparam, int lparam);
 
-        private void CheckDeps()
+        private const int SbBottom = 0x7;
+        private const int WmVscroll = 0x115;
+  
+    private void CheckDeps()
         {
-            CheckFFmpeg();
-            CheckMp4Box();
-            CheckTsMuxer();
+            CheckFFmpeg(true);
+            CheckMp4Box(true);
+            CheckTsMuxer(true);
+            if (!string.IsNullOrWhiteSpace(txtInputDir.Text) && !string.IsNullOrWhiteSpace(txtOutDir.Text) &&
+                !string.IsNullOrWhiteSpace(txtTempDir.Text))
+            {
+                btnStart.Enabled = true;
+            }
+            else
+            {
+                btnStart.Enabled = false;
+            }
         }
 
         private void ValidateFFmpeg()
@@ -50,10 +67,10 @@ namespace avchd2mp4remuxergui
             ChkDepTsMuxer.ForeColor = Color.Green;
             ChkDepTsMuxer.Checked = true;
             ChkDepTsMuxer.Enabled = false;
-            gbxProcess.Enabled = true;
+            gbxProcess.Enabled = true; 
         }
 
-        private void CheckFFmpeg()
+        private void CheckFFmpeg(bool bCheckFFmpeg)
         {
             if (File.Exists(_pathToFFmpeg))
             {
@@ -74,11 +91,10 @@ namespace avchd2mp4remuxergui
                     ChkDepFFmpeg.ForeColor = Color.Red;
                     ChkDepFFmpeg.Enabled = true;
                     gbxProcess.Enabled = false;
-                }
-           
+                } 
             }
         }
-        private void CheckMp4Box()
+        private void CheckMp4Box(bool bCheckMp4Box)
         {
             if (!File.Exists(_pathToFMp4Box))
             {
@@ -102,7 +118,7 @@ namespace avchd2mp4remuxergui
             }
         }
 
-        private void CheckTsMuxer()
+        public void CheckTsMuxer(bool bCheckTsMuxer)
         {
             if (!File.Exists(_pathToTsMuxer))
             {
@@ -146,6 +162,100 @@ namespace avchd2mp4remuxergui
         {
            CheckDeps();
            Activate();
+        }
+
+        private void BtnInputDir_Click(object sender, EventArgs e) 
+        {
+            var dlg = new CommonOpenFileDialog
+            {
+                Title = "Выбор папки с исходниками",
+                IsFolderPicker = true,
+                InitialDirectory  = Application.StartupPath,
+                DefaultDirectory = Application.StartupPath,
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true,
+                Multiselect = false,
+                ShowPlacesList = true, 
+            };
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                txtInputDir.Text = dlg.FileName;
+            }
+            CheckDeps();
+        }
+
+        private void BtnTempDir_Click(object sender, EventArgs e)
+        {
+            var dlg = new CommonOpenFileDialog
+            {
+                Title = "Выбор папки кэша",
+                IsFolderPicker = true,
+                InitialDirectory = Application.StartupPath,
+                DefaultDirectory = Application.StartupPath,
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true,
+                Multiselect = false,
+                ShowPlacesList = true,
+            };
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                txtTempDir.Text = dlg.FileName;
+            }
+           
+            CheckDeps();
+        }
+
+        private void BtnOutDir_Click(object sender, EventArgs e)
+        {
+            var dlg = new CommonOpenFileDialog
+            {
+                Title = "Выбор папки с готовыми файлами",
+                IsFolderPicker = true,
+                InitialDirectory = Application.StartupPath,
+                DefaultDirectory = Application.StartupPath,
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true,
+                Multiselect = false,
+                ShowPlacesList = true,
+            };
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                txtOutDir.Text = dlg.FileName;
+            }
+            CheckDeps();
+        }
+
+        private void BtnStart_Click(object sender, EventArgs e)
+        {
+                //test only
+                /*
+                txtInputDir.Text = txtOutDir.Text = txtTempDir.Text = @"D:\Work\PRIVATE\AVCHD\BDMV\STREAM";
+                var inputF = Path.Combine(txtInputDir.Text + "00000.MTS");
+                var outF = Path.Combine(txtTempDir.Text + "00000.track_4352.m4v");
+                var ffmpegCmd = "-y -i " + "\"" + inputF + "\"" + " -c:v copy -an " + "\"" + outF + "\"";
+                //MessageBox.Show(ffmpegCmd);
+                StartProcess.StartProcess(_pathToFFmpeg, ffmpegCmd);
+                StartProcess.AutoScroll = true;
+                SendMessage(StartProcess.Handle, WmVscroll, SbBottom, 0x0);
+                */
+       
+        }
+
+        private void BntAbout_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("by STAM, 2017" +Environment.NewLine + Environment.NewLine + "ControlConsole: " +StartProcess.ProductVersion + Environment.NewLine + "WindowsAPICodePack: 1.1.2(1)", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
