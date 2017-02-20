@@ -278,12 +278,13 @@
             this.StartProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.StartProcess.AutoScroll = true;
             this.StartProcess.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.StartProcess.IsInputEnabled = true;
             this.StartProcess.Location = new System.Drawing.Point(6, 149);
             this.StartProcess.Name = "StartProcess";
             this.StartProcess.SendKeyboardCommandsToProcess = false;
-            this.StartProcess.ShowDiagnostics = false;
+            this.StartProcess.ShowDiagnostics = true;
             this.StartProcess.Size = new System.Drawing.Size(428, 151);
             this.StartProcess.TabIndex = 5;
             // 
