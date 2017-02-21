@@ -269,14 +269,17 @@ namespace avchd2mp4remuxergui
             var files = Directory.GetFiles(txtInputDir.Text, _inputDefaultFormat, SearchOption.TopDirectoryOnly);
            // вывод первого списка файлов
             foreach (var t in files)
-            {
+            { 
+                
                 // Но должно запускаться по-очереди, а не одновременно. Надо починить..
                 var m4VFile = Path.GetFileNameWithoutExtension(t);
-                var outF = Path.Combine(txtTempDir.Text + @"\" + m4VFile + ".track_4352.m4v");
-                var ffmpegCmd = " -y -i " + "\"" + t + "\"" + " -c:v copy -an " + "\"" + outF + "\"";
+                
+                var outF = Path.GetFullPath(txtTempDir.Text)  +  m4VFile + ".track_4352.m4v";
+                var ffmpegCmd = " -y -i \"" + t + "\" -c:v copy -an \"" +outF + "\"";
+
                 //Для отладки...
                 MessageBox.Show(_pathToFFmpeg + ffmpegCmd);
-                Process.Start(_pathToFFmpeg + ffmpegCmd);
+                Process.Start(_pathToFFmpeg + ffmpegCmd)?.WaitForExit();
             }
             // Parallel.ForEach(
             //  files, new ParallelOptions { MaxDegreeOfParallelism = 1 },
