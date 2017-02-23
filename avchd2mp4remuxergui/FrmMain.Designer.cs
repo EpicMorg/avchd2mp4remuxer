@@ -46,7 +46,6 @@
             this.btnAbout = new System.Windows.Forms.Button();
             this.gbxProcess = new System.Windows.Forms.GroupBox();
             this.lblOutPutLog = new System.Windows.Forms.Label();
-            this.StartProcess = new ConsoleControl.ConsoleControl();
             this.btnOutDir = new System.Windows.Forms.Button();
             this.btnTempDir = new System.Windows.Forms.Button();
             this.btnInputDir = new System.Windows.Forms.Button();
@@ -63,6 +62,7 @@
             this.rbMTS = new System.Windows.Forms.RadioButton();
             this.rbM2TS = new System.Windows.Forms.RadioButton();
             this.rbTS = new System.Windows.Forms.RadioButton();
+            this.richTextBoxLog = new System.Windows.Forms.TextBox();
             this.gbxDeps.SuspendLayout();
             this.gbxProcess.SuspendLayout();
             this.SuspendLayout();
@@ -245,8 +245,8 @@
             this.gbxProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbxProcess.Controls.Add(this.richTextBoxLog);
             this.gbxProcess.Controls.Add(this.lblOutPutLog);
-            this.gbxProcess.Controls.Add(this.StartProcess);
             this.gbxProcess.Controls.Add(this.btnOutDir);
             this.gbxProcess.Controls.Add(this.btnTempDir);
             this.gbxProcess.Controls.Add(this.btnInputDir);
@@ -272,21 +272,6 @@
             this.lblOutPutLog.Size = new System.Drawing.Size(88, 13);
             this.lblOutPutLog.TabIndex = 6;
             this.lblOutPutLog.Text = "Вывод консоли:";
-            // 
-            // StartProcess
-            // 
-            this.StartProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.StartProcess.AutoScroll = true;
-            this.StartProcess.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.StartProcess.IsInputEnabled = true;
-            this.StartProcess.Location = new System.Drawing.Point(6, 149);
-            this.StartProcess.Name = "StartProcess";
-            this.StartProcess.SendKeyboardCommandsToProcess = false;
-            this.StartProcess.ShowDiagnostics = true;
-            this.StartProcess.Size = new System.Drawing.Size(428, 151);
-            this.StartProcess.TabIndex = 5;
             // 
             // btnOutDir
             // 
@@ -339,6 +324,7 @@
             this.txtOutDir.ReadOnly = true;
             this.txtOutDir.Size = new System.Drawing.Size(371, 20);
             this.txtOutDir.TabIndex = 0;
+            this.txtOutDir.Text = "D:\\Git\\myne\\avchd2mp4remuxer\\avchd2mp4remuxergui\\bin\\Debug\\out";
             // 
             // lblTempDir
             // 
@@ -358,6 +344,7 @@
             this.txtTempDir.ReadOnly = true;
             this.txtTempDir.Size = new System.Drawing.Size(371, 20);
             this.txtTempDir.TabIndex = 0;
+            this.txtTempDir.Text = "D:\\Git\\myne\\avchd2mp4remuxer\\avchd2mp4remuxergui\\bin\\Debug\\temp";
             // 
             // lblInputDir
             // 
@@ -377,6 +364,7 @@
             this.txtInputDir.ReadOnly = true;
             this.txtInputDir.Size = new System.Drawing.Size(371, 20);
             this.txtInputDir.TabIndex = 0;
+            this.txtInputDir.Text = "D:\\Git\\myne\\avchd2mp4remuxer\\avchd2mp4remuxergui\\bin\\Debug\\in";
             // 
             // btnStart
             // 
@@ -435,6 +423,17 @@
             this.rbTS.Text = "TS";
             this.rbTS.UseVisualStyleBackColor = true;
             // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxLog.Location = new System.Drawing.Point(6, 149);
+            this.richTextBoxLog.Multiline = true;
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(428, 151);
+            this.richTextBoxLog.TabIndex = 7;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -482,7 +481,6 @@
         private System.Windows.Forms.TextBox txtInputDir;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Button btnStart;
-        private ConsoleControl.ConsoleControl StartProcess;
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.LinkLabel linkGetTsMuxer;
         private System.Windows.Forms.LinkLabel linkGetMp4Box;
@@ -497,6 +495,7 @@
         private System.Windows.Forms.RadioButton rbMTS;
         private System.Windows.Forms.RadioButton rbM2TS;
         private System.Windows.Forms.RadioButton rbTS;
+        private System.Windows.Forms.TextBox richTextBoxLog;
     }
 }
 

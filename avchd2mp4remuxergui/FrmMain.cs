@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -262,37 +264,68 @@ namespace avchd2mp4remuxergui
             CheckDeps();
         }
 
-        private void BtnStart_Click(object sender, EventArgs e)
+        private async void BtnStart_Click(object sender, EventArgs e)
         {
             CheckDeps();
             // Шаг 1. Из сорцовой папки делаем выборку по файлам по заданной маске (радиобатоном, пока только MTS) 
             var files = Directory.GetFiles(txtInputDir.Text, _inputDefaultFormat, SearchOption.TopDirectoryOnly);
            // вывод первого списка файлов
+            var semaphore = new SemaphoreSlim(1);
             foreach (var t in files)
             { 
                 
                 // Но должно запускаться по-очереди, а не одновременно. Надо починить..
                 var m4VFile = Path.GetFileNameWithoutExtension(t);
-                
-                var outF = Path.GetFullPath(txtTempDir.Text)  +  m4VFile + ".track_4352.m4v";
+                var outF = Path.Combine(txtTempDir.Text, m4VFile + ".track_4352.m4v");
+
+                //var outF = Path.GetFullPath(txtTempDir.Text)  +  m4VFile + ".track_4352.m4v";
                 var ffmpegCmd = " -y -i \"" + t + "\" -c:v copy -an \"" +outF + "\"";
 
                 //Для отладки...
-                MessageBox.Show(_pathToFFmpeg + ffmpegCmd);
-                Process.Start(_pathToFFmpeg + ffmpegCmd)?.WaitForExit();
+                // MessageBox.Show(_pathToFFmpeg + ffmpegCmd);
+
+                var test = new Process
+                 {
+                     StartInfo =
+                     {
+                         FileName = _pathToFFmpeg,
+                         Arguments = ffmpegCmd,
+                         UseShellExecute = false,
+                         CreateNoWindow = true,
+                         RedirectStandardError = true,
+                         RedirectStandardInput = true,
+                         RedirectStandardOutput = true,
+                         WindowStyle = ProcessWindowStyle.Hidden,
+                         StandardErrorEncoding = Encoding.UTF8,
+                         StandardOutputEncoding = Encoding.UTF8,
+                         
+                    }
+                 };
+                 test.Start();
+                // Кусок пиздеца и черной магии от @kasthack
+                var tasks = new[] {test.StandardOutput, test.StandardError}.Select(stream => Task.Run(async () =>
+                {
+                    string s;
+                    while ((s = await stream.ReadLineAsync().ConfigureAwait(false)) != null)
+                    {
+                        var s2 = s;
+                        richTextBoxLog.Invoke((Action) (() =>
+                            {
+                                // semaphore.Wait();
+                                richTextBoxLog.AppendText(s2 + Environment.NewLine);
+                                // Application.DoEvents();
+                                // semaphore.Release();
+                            }
+                        ));
+                       
+                    }
+                })
+                ).ToArray();
+                test.WaitForExit();
+                await  Task.WhenAll(tasks).ConfigureAwait(false); 
+                 test.Dispose();
             }
-            // Parallel.ForEach(
-            //  files, new ParallelOptions { MaxDegreeOfParallelism = 1 },
-            //   (file, state, index) =>
-            //    {
-            // Шаг 2. Дальше запускается что-то вроде \\\\ffmpeg -i "ПОЛНЫЙПУТЬКМТС.MTS" -c:v copy -an  "ПОЛНЫЙПУТЬДЛЯВИДЕО.track_4352.m4v"\\\\
-
-
-            // Пока вывод во встроенную консоль отключен, ибо заускаетя параллельно.. Использовать Process.Start();
-            //StartProcess.StartProcess(_pathToFFmpeg, ffmpegCmd);
-            //StartProcess.AutoScroll = true;
-            //SendMessage(StartProcess.Handle, WmVscroll, SbBottom, 0x0);
-
+            /* */ 
             // Шаг 3. создаем метафайл на  mts-файл который будем демуксовать.
             // Писать в выбранную темповую папку файл default.meta с примерным содержимым:
             // \\\\MUXOPT--no - pcr - on - video - pid--new- audio - pes--demux--vbr--vbv - len = 500\\\\
@@ -310,6 +343,6 @@ namespace avchd2mp4remuxergui
             //    });
 
         }
-
+        
     }
 }
