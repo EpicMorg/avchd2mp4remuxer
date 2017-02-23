@@ -45,6 +45,7 @@
             this.ChkDepFFmpeg = new System.Windows.Forms.CheckBox();
             this.btnAbout = new System.Windows.Forms.Button();
             this.gbxProcess = new System.Windows.Forms.GroupBox();
+            this.richTextBoxLog = new System.Windows.Forms.TextBox();
             this.lblOutPutLog = new System.Windows.Forms.Label();
             this.btnOutDir = new System.Windows.Forms.Button();
             this.btnTempDir = new System.Windows.Forms.Button();
@@ -62,7 +63,6 @@
             this.rbMTS = new System.Windows.Forms.RadioButton();
             this.rbM2TS = new System.Windows.Forms.RadioButton();
             this.rbTS = new System.Windows.Forms.RadioButton();
-            this.richTextBoxLog = new System.Windows.Forms.TextBox();
             this.gbxDeps.SuspendLayout();
             this.gbxProcess.SuspendLayout();
             this.SuspendLayout();
@@ -262,7 +262,24 @@
             this.gbxProcess.Size = new System.Drawing.Size(440, 306);
             this.gbxProcess.TabIndex = 1;
             this.gbxProcess.TabStop = false;
-            this.gbxProcess.Text = "Папки:";
+            this.gbxProcess.Text = "Процесс:";
+            // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxLog.BackColor = System.Drawing.SystemColors.Desktop;
+            this.richTextBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.richTextBoxLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBoxLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.richTextBoxLog.Location = new System.Drawing.Point(6, 149);
+            this.richTextBoxLog.Multiline = true;
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.ReadOnly = true;
+            this.richTextBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.richTextBoxLog.Size = new System.Drawing.Size(428, 151);
+            this.richTextBoxLog.TabIndex = 7;
             // 
             // lblOutPutLog
             // 
@@ -311,9 +328,9 @@
             this.lblOutDir.AutoSize = true;
             this.lblOutDir.Location = new System.Drawing.Point(6, 94);
             this.lblOutDir.Name = "lblOutDir";
-            this.lblOutDir.Size = new System.Drawing.Size(101, 13);
+            this.lblOutDir.Size = new System.Drawing.Size(84, 13);
             this.lblOutDir.TabIndex = 1;
-            this.lblOutDir.Text = "Исходящая папка:";
+            this.lblOutDir.Text = "Вывод в папку:";
             // 
             // txtOutDir
             // 
@@ -331,9 +348,9 @@
             this.lblTempDir.AutoSize = true;
             this.lblTempDir.Location = new System.Drawing.Point(6, 55);
             this.lblTempDir.Name = "lblTempDir";
-            this.lblTempDir.Size = new System.Drawing.Size(85, 13);
+            this.lblTempDir.Size = new System.Drawing.Size(88, 13);
             this.lblTempDir.TabIndex = 1;
-            this.lblTempDir.Text = "Папка с кэшэм";
+            this.lblTempDir.Text = "Папка с кэшэм:";
             // 
             // txtTempDir
             // 
@@ -351,9 +368,9 @@
             this.lblInputDir.AutoSize = true;
             this.lblInputDir.Location = new System.Drawing.Point(6, 16);
             this.lblInputDir.Name = "lblInputDir";
-            this.lblInputDir.Size = new System.Drawing.Size(94, 13);
+            this.lblInputDir.Size = new System.Drawing.Size(121, 13);
             this.lblInputDir.TabIndex = 1;
-            this.lblInputDir.Text = "Входящая папка:";
+            this.lblInputDir.Text = "Папка с исходниками:";
             // 
             // txtInputDir
             // 
@@ -376,7 +393,7 @@
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "Запуск";
             this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
+            this.btnStart.Click += new System.EventHandler(this.BtnStart_ClickAsync);
             // 
             // openFileDialog
             // 
@@ -422,17 +439,6 @@
             this.rbTS.TabIndex = 8;
             this.rbTS.Text = "TS";
             this.rbTS.UseVisualStyleBackColor = true;
-            // 
-            // richTextBoxLog
-            // 
-            this.richTextBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxLog.Location = new System.Drawing.Point(6, 149);
-            this.richTextBoxLog.Multiline = true;
-            this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(428, 151);
-            this.richTextBoxLog.TabIndex = 7;
             // 
             // FrmMain
             // 

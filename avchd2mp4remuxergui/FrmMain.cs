@@ -20,6 +20,7 @@ namespace avchd2mp4remuxergui
         private string _pathToTsMuxer = Path.Combine(Application.StartupPath, "tsMuxeR.exe");
         private string _inputDefaultFormat = "*.MTS";
 
+
         public FrmMain()
         {
             InitializeComponent();
@@ -264,27 +265,20 @@ namespace avchd2mp4remuxergui
             CheckDeps();
         }
 
-        private async void BtnStart_Click(object sender, EventArgs e)
+        private async void BtnStart_ClickAsync(object sender, EventArgs e)
         {
             CheckDeps();
             // Шаг 1. Из сорцовой папки делаем выборку по файлам по заданной маске (радиобатоном, пока только MTS) 
             var files = Directory.GetFiles(txtInputDir.Text, _inputDefaultFormat, SearchOption.TopDirectoryOnly);
-           // вывод первого списка файлов
-            var semaphore = new SemaphoreSlim(1);
+
+            // вывод первого списка файлов
             foreach (var t in files)
             { 
-                
-                // Но должно запускаться по-очереди, а не одновременно. Надо починить..
                 var m4VFile = Path.GetFileNameWithoutExtension(t);
-                var outF = Path.Combine(txtTempDir.Text, m4VFile + ".track_4352.m4v");
-
-                //var outF = Path.GetFullPath(txtTempDir.Text)  +  m4VFile + ".track_4352.m4v";
+                var outF = Path.Combine(txtTempDir.Text, m4VFile + ".track_4352.m4v"); 
                 var ffmpegCmd = " -y -i \"" + t + "\" -c:v copy -an \"" +outF + "\"";
-
-                //Для отладки...
-                // MessageBox.Show(_pathToFFmpeg + ffmpegCmd);
-
-                var test = new Process
+                //Для отладки... // MessageBox.Show(_pathToFFmpeg + ffmpegCmd); 
+                var startProcess = new Process
                  {
                      StartInfo =
                      {
@@ -301,9 +295,9 @@ namespace avchd2mp4remuxergui
                          
                     }
                  };
-                 test.Start();
+                startProcess.Start(); 
                 // Кусок пиздеца и черной магии от @kasthack
-                var tasks = new[] {test.StandardOutput, test.StandardError}.Select(stream => Task.Run(async () =>
+                var tasks = new[] {startProcess.StandardOutput, startProcess.StandardError}.Select(stream => Task.Run(async () =>
                 {
                     string s;
                     while ((s = await stream.ReadLineAsync().ConfigureAwait(false)) != null)
@@ -311,21 +305,18 @@ namespace avchd2mp4remuxergui
                         var s2 = s;
                         richTextBoxLog.Invoke((Action) (() =>
                             {
-                                // semaphore.Wait();
                                 richTextBoxLog.AppendText(s2 + Environment.NewLine);
-                                // Application.DoEvents();
-                                // semaphore.Release();
                             }
-                        ));
-                       
+                        )); 
                     }
                 })
-                ).ToArray();
-                test.WaitForExit();
-                await  Task.WhenAll(tasks).ConfigureAwait(false); 
-                 test.Dispose();
+                ).ToArray(); 
+                startProcess.WaitForExit();
+                await Task.WhenAll(tasks).ConfigureAwait(false); 
+                startProcess.Dispose();
             }
-            /* */ 
+
+            /* */
             // Шаг 3. создаем метафайл на  mts-файл который будем демуксовать.
             // Писать в выбранную темповую папку файл default.meta с примерным содержимым:
             // \\\\MUXOPT--no - pcr - on - video - pid--new- audio - pes--demux--vbr--vbv - len = 500\\\\
